@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class App {
 
     public static void main(String args[]) {
@@ -5,6 +7,107 @@ public class App {
         App a = new App();
         a.beeman();
 
+
+
+    }
+
+
+    Planet movePlanetVerlet(Planet p, List<Planet> planets, double dt){
+
+
+        Vector2D position = p.position;
+        Vector2D velocity = p.velocity;
+        Vector2D acceleration = p.acceleration;
+
+
+        velocity = velocity.getAdded(acceleration.getMultiplied(dt/2));
+        position = position.getAdded(velocity.getMultiplied(dt));
+
+        //CALCULO DE LA FUERZA ACA
+        acceleration.set(applyForce(p,planets));
+
+        velocity = velocity.getAdded(acceleration.getMultiplied(dt/2));
+
+        return new Planet(position,velocity,acceleration,p.mass);
+    }
+
+    Planet movePlanetGPC(Planet p, List<Planet> planets, double dt){
+
+        Vector2D r = new Vector2D(p.position);
+        Vector2D r1 = new Vector2D( p.velocity);
+
+        Vector2D r2 = new Vector2D(applyForce(p,planets));
+        Vector2D r3 = new Vector2D(0,0);
+        Vector2D r4 = new Vector2D(0,0);
+        Vector2D r5 = new Vector2D(0,0);
+
+        Vector2D rp;
+        Vector2D r1p;
+        Vector2D r2p;
+
+
+        Vector2D rc;
+        Vector2D r1c;
+
+        Vector2D deltaa;
+        Vector2D deltaR2;
+
+
+
+        rp = r.getAdded(r1.getMultiplied(getTerm(dt,1))).getAdded(r2.getMultiplied(getTerm(dt,2))).getAdded(r3.getMultiplied(getTerm(dt,3))).getAdded(r4.getMultiplied(getTerm(dt,4))).getAdded(r5.getMultiplied(getTerm(dt,5)));
+        r1p = r1.getAdded(r2.getMultiplied(getTerm(dt,1))).getAdded(r3.getMultiplied(getTerm(dt,2))).getAdded(r4.getMultiplied(getTerm(dt,3))).getAdded(r5.getMultiplied(getTerm(dt,4)));
+        r2p = r2.getAdded(r3.getMultiplied(getTerm(dt,1))).getAdded(r4.getMultiplied(getTerm(dt,2))).getAdded(r5.getMultiplied(getTerm(dt,3)));
+
+
+        deltaa = r2.getSubtracted(r2p);
+
+        deltaR2 = deltaa.getMultiplied(getTerm(dt,2));
+
+        rc = rp.getAdded(deltaR2.getMultiplied(3/20.0));
+        r1c = r1p.getAdded(deltaR2.getMultiplied((251)/(360*getTerm(dt,1))));
+
+        r.set(rc);
+        r1.set(r1c);
+
+        return new Planet(r,r1c,r2,p.mass);
+
+    }
+
+    Planet movePlanetBeeman(Planet p, List<Planet> planets, double dt){
+
+        Vector2D position = new Vector2D(p.position);
+        Vector2D velocity = new Vector2D(p.velocity);
+        //CALCULAR FUERZA
+        Vector2D currAcc = new Vector2D(p.acceleration);
+        Vector2D prevAcc = new Vector2D(p.prevAcc);
+        Vector2D nextAcc = new Vector2D(0,0);
+
+
+
+        position = position.getAdded(velocity.getMultiplied(dt)).getAdded(currAcc.getMultiplied(2*dt*dt/3)).getAdded(prevAcc.getMultiplied(-1*dt*dt/6));
+
+        //CALCULAR LA FUERZA
+        nextAcc.set(applyForce(p,planets));
+
+        velocity = velocity.getAdded(nextAcc.getMultiplied(dt/3)).getAdded(currAcc.getMultiplied(5*dt/6)).getAdded(prevAcc.getMultiplied(-1*dt/6));
+
+        return new Planet(position,velocity,nextAcc,currAcc,p.mass);
+
+    }
+
+    private Vector2D applyForce(Planet p, List<Planet> planets){
+
+        Vector2D force = new Vector2D(0,0);
+        double g = 6.693e-11;
+
+
+        for(Planet planet : planets){
+            Vector2D en = (planet.position.getSubtracted(p.position).getDivided(Math.sqrt(planet.position.distanceSq(p.position))));
+            force.add(en.getMultiplied(g*p.mass*planet.mass/Math.pow(p.position.distance(planet.position),2)));
+        }
+
+
+        return force.getDivided(p.mass);
     }
 
 
