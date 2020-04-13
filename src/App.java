@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -5,6 +6,15 @@ import java.util.List;
 public class App {
 
     public static void main(String args[]) {
+
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter("outputOVITO.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        writer.print("");
+        writer.close();
 
         App a = new App();
 //        a.beeman();
@@ -38,7 +48,12 @@ public class App {
         vel = new Vector2D(earth.velocity.getAdded(new Vector2D((7120+8000)*Math.cos(angle),(8000+7120)*Math.sin(angle))));
         acc = new Vector2D();
 
-        Planet ship = new Planet(pos,vel,acc,6.39e23 );
+        Planet ship = new Planet(pos,vel,acc,2e5 );
+
+        earth.setAcceleration(a.applyForce(earth,Arrays.asList(sun, mars, ship)));
+        mars.setAcceleration(a.applyForce(mars,Arrays.asList(sun, earth, ship)));
+        sun.setAcceleration(a.applyForce(sun,Arrays.asList(earth, mars, ship)));
+        ship.setAcceleration(a.applyForce(ship,Arrays.asList(sun, mars, earth)));
 
         double time = 0;
         double dt = 10;
@@ -50,27 +65,17 @@ public class App {
 
 
 
-        while(time < 10000 ){
-//            if(time%60 == 0){
-//                System.out.println(4);
-//                System.out.println();
-//                System.out.printf("%f\t%f\n",sun.position.x,sun.position.y);
-//                System.out.printf("%f\t%f\n",earth.position.x,earth.position.y);
-//                System.out.printf("%f\t%f\n",mars.position.x,mars.position.y);
-//                System.out.printf("%f\t%f\n",ship.position.x,ship.position.y);
-//            }
+        while(time < 3.154e+7 ){
+            if(time%86400 == 0){
+                generateOvitoFile(Arrays.asList(sun,mars,earth,ship));
+            }
 
-            newEarth = a.movePlanetVerlet(earth,new ArrayList<Planet>(Arrays.asList(sun, mars, ship)),dt);
-            newSun = a.movePlanetVerlet(sun,new ArrayList<Planet>(Arrays.asList(earth, mars, ship)),dt);
-            newMars = a.movePlanetVerlet(earth,new ArrayList<Planet>(Arrays.asList(sun, earth, ship)),dt);
-            newShip = a.movePlanetVerlet(earth,new ArrayList<Planet>(Arrays.asList(sun, mars, earth)),dt);
+            newEarth = a.movePlanetVerlet(earth,new ArrayList<>(Arrays.asList(sun, mars, ship)),dt);
+            newSun = a.movePlanetVerlet(sun,new ArrayList<>(Arrays.asList(earth, mars, ship)),dt);
+            newMars = a.movePlanetVerlet(mars,new ArrayList<>(Arrays.asList(sun, earth, ship)),dt);
+            newShip = a.movePlanetVerlet(ship,new ArrayList<>(Arrays.asList(sun, mars, earth)),dt);
 
-            System.out.println("-----------");
-            System.out.printf("%f\t%f\n",newSun.position.x,newSun.position.y);
-            System.out.printf("%f\t%f\n",newEarth.position.x,newEarth.position.y);
-            System.out.printf("%f\t%f\n",newMars.position.x,newMars.position.y);
-            System.out.printf("%f\t%f\n",newShip.position.x,newShip.position.y);
-            System.out.println("-----------");
+
 
             earth = newEarth;
             mars = newMars;
@@ -80,9 +85,33 @@ public class App {
             time += dt;
         }
 
+    }
 
+    public static void generateOvitoFile(List<Planet> planets){
+        StringBuilder sb = new StringBuilder();
+        sb.append(planets.size());
+        sb.append("\n");
+        sb.append("\n");
 
+        for (Planet p: planets){
+            sb.append(p.position.x);
+            sb.append("\t");
+            sb.append(p.position.y);
 
+            sb.append("\n");
+        }
+
+        try {
+
+            // Open given file in append mode.
+            BufferedWriter out = new BufferedWriter(
+                    new FileWriter("outputOVITO.txt", true));
+            out.write(sb.toString());
+            out.close();
+        }
+        catch (IOException e) {
+            System.out.println("exception occoured" + e);
+        }
     }
 
 
@@ -99,7 +128,6 @@ public class App {
     }
 
     Planet movePlanetVerlet(Planet p, List<Planet> planets, double dt){
-
 
         Vector2D position = p.position;
         Vector2D velocity = p.velocity;
@@ -188,8 +216,8 @@ public class App {
 
 
         for(Planet planet : planets){
-            Vector2D en = (planet.position.getSubtracted(p.position).getDivided(Math.sqrt(planet.position.distanceSq(p.position))));
-            force.add(en.getMultiplied(g*p.mass*planet.mass/Math.pow(p.position.distance(planet.position),2)));
+            Vector2D en = (planet.position.getSubtracted(p.position).getDivided(planet.position.getSubtracted(p.position).getLength()));
+            force.add(en.getMultiplied(g*p.mass*planet.mass/p.position.distanceSq(planet.position)));
         }
 
 
