@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class App {
@@ -5,12 +7,96 @@ public class App {
     public static void main(String args[]) {
 
         App a = new App();
-        a.beeman();
+//        a.beeman();
+
+        Vector2D pos = new Vector2D(a.auToMeter(-9.600619697743452e-1),a.auToMeter(-2.822355844063401e-1));
+        Vector2D vel = new Vector2D(a.auDayToMeterSec(4.572972309577654e-3),a.auDayToMeterSec(-1.656334129232400e-2));
+        Vector2D acc = new Vector2D();
+
+        Planet earth = new Planet(pos,vel,acc,5.972e24 );
+
+        pos = new Vector2D(a.auToMeter(-1.651921224501318e-1),a.auToMeter(-1.459738176234038));
+        vel = new Vector2D(a.auDayToMeterSec(1.443361788681964e-2),a.auDayToMeterSec(-3.703429642664186e-4));
+        acc = new Vector2D();
+
+        Planet mars = new Planet(pos,vel,acc,6.39e23 );
+
+
+
+        pos = new Vector2D(0,0);
+        vel = new Vector2D(0,0);
+        acc = new Vector2D();
+
+        Planet sun = new Planet(pos,vel,acc,6.39e23 );
+
+        double angle = earth.position.getAngle();
+
+
+        pos = new Vector2D(earth.position.x+Math.cos(angle)*1500000,earth.position.y+Math.sin(angle)*1500000);
+
+        angle = earth.position.getPerp().getAngle();
+        vel = new Vector2D(earth.velocity.getAdded(new Vector2D((7120+8000)*Math.cos(angle),(8000+7120)*Math.sin(angle))));
+        acc = new Vector2D();
+
+        Planet ship = new Planet(pos,vel,acc,6.39e23 );
+
+        double time = 0;
+        double dt = 10;
+
+        Planet newShip;
+        Planet newEarth;
+        Planet newSun;
+        Planet newMars;
+
+
+
+        while(time < 10000 ){
+//            if(time%60 == 0){
+//                System.out.println(4);
+//                System.out.println();
+//                System.out.printf("%f\t%f\n",sun.position.x,sun.position.y);
+//                System.out.printf("%f\t%f\n",earth.position.x,earth.position.y);
+//                System.out.printf("%f\t%f\n",mars.position.x,mars.position.y);
+//                System.out.printf("%f\t%f\n",ship.position.x,ship.position.y);
+//            }
+
+            newEarth = a.movePlanetVerlet(earth,new ArrayList<Planet>(Arrays.asList(sun, mars, ship)),dt);
+            newSun = a.movePlanetVerlet(sun,new ArrayList<Planet>(Arrays.asList(earth, mars, ship)),dt);
+            newMars = a.movePlanetVerlet(earth,new ArrayList<Planet>(Arrays.asList(sun, earth, ship)),dt);
+            newShip = a.movePlanetVerlet(earth,new ArrayList<Planet>(Arrays.asList(sun, mars, earth)),dt);
+
+            System.out.println("-----------");
+            System.out.printf("%f\t%f\n",newSun.position.x,newSun.position.y);
+            System.out.printf("%f\t%f\n",newEarth.position.x,newEarth.position.y);
+            System.out.printf("%f\t%f\n",newMars.position.x,newMars.position.y);
+            System.out.printf("%f\t%f\n",newShip.position.x,newShip.position.y);
+            System.out.println("-----------");
+
+            earth = newEarth;
+            mars = newMars;
+            sun = newSun;
+            ship = newShip;
+
+            time += dt;
+        }
+
 
 
 
     }
 
+
+    double auToMeter(double au){
+        double meters =  1.495978707e11;
+        return au*meters;
+    }
+
+    double auDayToMeterSec(double auday){
+        double meters =  1.495978707e11;
+        double secs = 86400;
+
+        return auday*meters/secs;
+    }
 
     Planet movePlanetVerlet(Planet p, List<Planet> planets, double dt){
 
