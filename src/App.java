@@ -8,191 +8,29 @@ public class App {
     public static void main(String args[]) {
 
         App a = new App();
-        double distance = a.launchShip(1,5,6.307e+7,new Vector2D(4000,4000),true);
+        double distance;
+        double minDistance = Double.POSITIVE_INFINITY;
+        int minDay = 1;
 
-//        PrintWriter writer = null;
-//        try {
-//            writer = new PrintWriter("outputOVITO.txt");
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        writer.print("");
-//        writer.close();
-//
-//        App a = new App();
-////        a.beeman();
-//
-//        Vector2D pos = new Vector2D(a.auToMeter(-9.600619697743452e-1),a.auToMeter(-2.822355844063401e-1));
-//        Vector2D vel = new Vector2D(a.auDayToMeterSec(4.572972309577654e-3),a.auDayToMeterSec(-1.656334129232400e-2));
-//        Vector2D acc = new Vector2D();
-//
-//
-//        Planet earth = new Planet(1,pos,vel,acc,5.972e24 );
-//
-//
-//
-//        pos = new Vector2D(a.auToMeter(-1.651921224501318e-1),a.auToMeter(-1.459738176234038));
-//        vel = new Vector2D(a.auDayToMeterSec(1.443361788681964e-2),a.auDayToMeterSec(-3.703429642664186e-4));
-//        acc = new Vector2D();
-//
-//        Planet mars = new Planet(3,pos,vel,acc,6.39e23 );
-//
-//
-//
-//        pos = new Vector2D(0,0);
-//        vel = new Vector2D(0,0);
-//        acc = new Vector2D();
-//
-//        Planet sun = new Planet(0,pos,vel,acc,1.989e30 );
-//
-////        double angle = earth.position.getAngle();
-////
-////
-////        pos = new Vector2D(earth.position.x+Math.cos(angle)*(1500000+6371000),earth.position.y+Math.sin(angle)*(1500000+6371000));
-////        angle =  pos.getPerp().getAngle();
-//////        angle = pos.getSubtracted(mars.position).getAngle();
-////        vel = new Vector2D(earth.velocity.x+(7120+8000)*Math.cos(angle),earth.velocity.y+(8000+7120)*Math.sin(angle));
-//////        vel = earth.velocity.getAdded(new Vector2D((7120+8000)*Math.cos(angle),(8000+7120)*Math.sin(angle)));
-////
-////
-////        acc = new Vector2D();
-////
-//        Planet ship = new Planet(2,new Vector2D(0,0),new Vector2D(0,0),new Vector2D(0,0),0 );
-//
-//
-//        earth.setAcceleration(a.applyForce(earth,Arrays.asList(sun, mars)));
-//        mars.setAcceleration(a.applyForce(mars,Arrays.asList(sun, earth)));
-//        sun.setAcceleration(a.applyForce(sun,Arrays.asList(earth, mars)));
-////       // ship.setAcceleration(a.applyForce(ship,Arrays.asList(sun, mars, earth)));
-//
-//        double time = 0;
-//        double dt = 60;
-//        Planet newShip;
-//        Planet newEarth;
-//        Planet newSun;
-//        Planet newMars;
-//        int day = 1;
-//        int elapsed = 0;
-//        while(day < 380) {
-//
-//            double distance = Double.POSITIVE_INFINITY;
-//
-//            while (time < (6.154e+7 +day*86400) ) {
-//
-//                if (time % 86400 == 0) {
-//                    elapsed++;
-//                }
-//                if(day == 67 &&time % 86400 == 0){
-//                    System.out.println(96);
-//                    generateOvitoFile(Arrays.asList(sun,mars,ship,earth));
-//                }
-//
-//                if (elapsed == day){
-//
-//                    double angle = earth.position.getAngle();
-//
-//
-//                    pos = new Vector2D(earth.position.x+Math.cos(angle)*(1500000+6371000),earth.position.y+Math.sin(angle)*(1500000+6371000));
-//                    angle =  pos.getPerp().getAngle();
-//                    vel = new Vector2D(earth.velocity.x+(7120+4100)*Math.cos(angle),earth.velocity.y+(4100+7120)*Math.sin(angle));
-//
-//                    acc = new Vector2D();
-//
-//                     ship = new Planet(2,pos,vel,acc,2e5 );
-//
-//
-//                    earth.setAcceleration(a.applyForce(earth,Arrays.asList(sun, mars, ship)));
-//                    mars.setAcceleration(a.applyForce(mars,Arrays.asList(sun, earth, ship)));
-//                    sun.setAcceleration(a.applyForce(sun,Arrays.asList(earth, mars, ship)));
-//                    ship.setAcceleration(a.applyForce(ship,Arrays.asList(sun, mars, earth)));
-//
-//                    newEarth = a.movePlanetVerlet(earth, new ArrayList<>(Arrays.asList(sun, mars, ship)), dt);
-//                    newSun = a.movePlanetVerlet(sun, new ArrayList<>(Arrays.asList(earth, mars, ship)), dt);
-//                    newMars = a.movePlanetVerlet(mars, new ArrayList<>(Arrays.asList(sun, earth, ship)), dt);
-//                    newShip = a.movePlanetVerlet(ship, new ArrayList<>(Arrays.asList(sun, mars, earth)), dt);
-//
-//
-//                    earth = newEarth;
-//                    mars = newMars;
-//                    sun = newSun;
-//                    ship = newShip;
-//
-//                    time += dt;
-//                    elapsed++;
-//                }
-//                else if(elapsed>day){
-//
-//                    if(ship.position.distance(mars.position) < distance){
-//                        distance = ship.position.distance(mars.position);
-//                    }
-//
-//
-//                    newEarth = a.movePlanetVerlet(earth, new ArrayList<>(Arrays.asList(sun, mars, ship)), dt);
-//                    newSun = a.movePlanetVerlet(sun, new ArrayList<>(Arrays.asList(earth, mars, ship)), dt);
-//                    newMars = a.movePlanetVerlet(mars, new ArrayList<>(Arrays.asList(sun, earth, ship)), dt);
-//                    newShip = a.movePlanetVerlet(ship, new ArrayList<>(Arrays.asList(sun, mars, earth)), dt);
-//
-//                    earth = newEarth;
-//                    mars = newMars;
-//                    sun = newSun;
-//                    ship = newShip;
-//
-//                    time += dt;
-//                }
-//                else{
-//
-//                    newEarth = a.movePlanetVerlet(earth, new ArrayList<>(Arrays.asList(sun, mars)), dt);
-//                    newSun = a.movePlanetVerlet(sun, new ArrayList<>(Arrays.asList(earth, mars)), dt);
-//                    newMars = a.movePlanetVerlet(mars, new ArrayList<>(Arrays.asList(sun, earth)), dt);
-//
-//
-//                    earth = newEarth;
-//                    mars = newMars;
-//                    sun = newSun;
-//
-//                    time += dt;
-//
-//                }
-//
-//            }
-//
-//             pos = new Vector2D(a.auToMeter(-9.600619697743452e-1),a.auToMeter(-2.822355844063401e-1));
-//             vel = new Vector2D(a.auDayToMeterSec(4.572972309577654e-3),a.auDayToMeterSec(-1.656334129232400e-2));
-//             acc = new Vector2D();
-//
-//
-//             earth = new Planet(1,pos,vel,acc,5.972e24 );
-//
-//
-//
-//            pos = new Vector2D(a.auToMeter(-1.651921224501318e-1),a.auToMeter(-1.459738176234038));
-//            vel = new Vector2D(a.auDayToMeterSec(1.443361788681964e-2),a.auDayToMeterSec(-3.703429642664186e-4));
-//            acc = new Vector2D();
-//
-//             mars = new Planet(3,pos,vel,acc,6.39e23 );
-//
-//
-//
-//            pos = new Vector2D(0,0);
-//            vel = new Vector2D(0,0);
-//            acc = new Vector2D();
-//
-//             sun = new Planet(0,pos,vel,acc,1.989e30 );
-//
-//
-//             ship = new Planet(2,new Vector2D(0,0),new Vector2D(0,0),new Vector2D(0,0),0 );
-//
-//
-//            earth.setAcceleration(a.applyForce(earth,Arrays.asList(sun, mars)));
-//            mars.setAcceleration(a.applyForce(mars,Arrays.asList(sun, earth)));
-//            sun.setAcceleration(a.applyForce(sun,Arrays.asList(earth, mars)));
-////       // ship.setAcceleration(a.applyForce(ship,Arrays.asList(sun, mars, earth)));
-//
-//            System.out.printf("%d\t%f\n",day,distance);
-//            day++;
-//            time = 0;
-//            elapsed=0;
-//        }
+
+
+        List<List<Planet>> days = a.getDailyPlanetPositions(86400*370*2,1);
+        List<List<Planet>> hours = a.getHourlyPlanetPositions(1,days.get(96));
+        List<List<Planet>> minutes = a.getMinutePlanetPositions(1,hours.get(5));
+
+
+
+        for(int i = 0; i<minutes.size();i++){
+            distance = a.launchShipOnDay(minutes.get(i),5,86400*370,new Vector2D(8000,8000),true);
+            System.out.printf("Launch hour: %d, Distance: %f\n",i,distance);
+            if(distance < minDistance){
+                minDistance = distance;
+                minDay = i;
+            }
+        }
+
+        System.out.printf("%d\t%f\n",minDay,minDistance);
+
 
     }
 
@@ -334,6 +172,62 @@ public class App {
 
     }
 
+    public double launchShipOnDay(List<Planet> planets,double dt, double totalTime, Vector2D shipVelocity, boolean animate){
+
+        Planet sun = planets.get(0);
+        Planet earth = planets.get(1);
+        Planet mars = planets.get(2);
+
+        double angle = earth.position.getAngle();
+
+        Vector2D pos = new Vector2D(earth.position.x+Math.cos(angle)*(1500000+6371000),earth.position.y+Math.sin(angle)*(1500000+6371000));
+        angle =  pos.getPerp().getAngle();
+        Vector2D vel = new Vector2D(earth.velocity.x+(7120+shipVelocity.x)*Math.cos(angle),earth.velocity.y+(shipVelocity.y+7120)*Math.sin(angle));
+
+        Vector2D acc = new Vector2D();
+
+        Planet ship = new Planet(2,pos,vel,acc,2e5 ,0);
+
+        earth.setAcceleration(applyForce(earth,Arrays.asList(sun, mars, ship)));
+        mars.setAcceleration(applyForce(mars,Arrays.asList(sun, earth, ship)));
+        sun.setAcceleration(applyForce(sun,Arrays.asList(earth, mars, ship)));
+        ship.setAcceleration(applyForce(ship,Arrays.asList(sun, mars, earth)));
+
+        generateOvitoFile(Arrays.asList(sun,mars,ship,earth));
+
+        Planet newEarth,newSun,newMars,newShip;
+        double time = 0;
+        double distance = Double.POSITIVE_INFINITY;
+
+        while (time < totalTime ) {
+            if(mars.position.distance(ship.position) < distance){
+                distance = mars.position.distance(ship.position);
+            }
+            newEarth = movePlanetVerlet(earth, new ArrayList<>(Arrays.asList(sun, mars,ship)), dt);
+            newSun = movePlanetVerlet(sun, new ArrayList<>(Arrays.asList(earth, mars,ship)), dt);
+            newMars = movePlanetVerlet(mars, new ArrayList<>(Arrays.asList(sun, earth,ship)), dt);
+            newShip = movePlanetVerlet(ship, new ArrayList<>(Arrays.asList(sun, earth,mars)), dt);
+
+            earth = newEarth;
+            mars = newMars;
+            sun = newSun;
+            ship = newShip;
+
+            if(ship.collidesWith(mars)){
+                System.out.println("The ship collided with Mars");
+            }
+            else if(ship.collidesWith(earth)){
+                System.out.println("The ship collided with the Earth");
+            }
+
+            time += dt;
+
+        }
+
+        return distance;
+
+    }
+
     private void calculatePrevAcceleration(Planet earth, Planet sun, Planet mars, Planet ship, double dt){
 
         Vector2D earthPrevVel = earth.getVelocity().getAdded(earth.getAcceleration().getMultiplied(-1*dt));
@@ -360,6 +254,128 @@ public class App {
 
         //System.out.printf("EA = %f, SUN = %f, MA = %f, SH = %f\n", earth.getPrevAcc().getLength(), sun.getPrevAcc().getLength(), mars.getPrevAcc().getLength(), ship.getPrevAcc().getLength());
     }
+
+    public List<List<Planet>> getDailyPlanetPositions(double totalTime, double dt){
+
+        Vector2D pos = new Vector2D(auToMeter(-9.600619697743452e-1),auToMeter(-2.822355844063401e-1));
+        Vector2D vel = new Vector2D(auDayToMeterSec(4.572972309577654e-3),auDayToMeterSec(-1.656334129232400e-2));
+        Vector2D acc = new Vector2D();
+        Planet earth = new Planet(1,pos,vel,acc,5.972e24,6371000 );
+
+
+        pos = new Vector2D(auToMeter(-1.651921224501318e-1),auToMeter(-1.459738176234038));
+        vel = new Vector2D(auDayToMeterSec(1.443361788681964e-2),auDayToMeterSec(-3.703429642664186e-4));
+        acc = new Vector2D();
+        Planet mars = new Planet(3,pos,vel,acc,6.39e23 ,3389500);
+
+
+        pos = new Vector2D(0,0);
+        vel = new Vector2D(0,0);
+        acc = new Vector2D();
+        Planet sun = new Planet(0,pos,vel,acc,1.989e30,696340000 );
+
+
+        earth.setAcceleration(applyForce(earth,Arrays.asList(sun, mars)));
+        mars.setAcceleration(applyForce(mars,Arrays.asList(sun, earth)));
+        sun.setAcceleration(applyForce(sun,Arrays.asList(earth, mars)));
+
+
+        Planet newEarth,newSun,newMars;
+        List<List<Planet>> days = new ArrayList<>();
+
+        double time = 0;
+
+        while (time < totalTime ) {
+            if(time % 86400 == 0){
+                days.add(Arrays.asList(sun,earth,mars));
+            }
+            newEarth = movePlanetVerlet(earth, new ArrayList<>(Arrays.asList(sun, mars)), dt);
+            newSun = movePlanetVerlet(sun, new ArrayList<>(Arrays.asList(earth, mars)), dt);
+            newMars = movePlanetVerlet(mars, new ArrayList<>(Arrays.asList(sun, earth)), dt);
+
+            earth = newEarth;
+            mars = newMars;
+            sun = newSun;
+
+
+            time += dt;
+        }
+
+        return days;
+
+    }
+
+    public List<List<Planet>> getHourlyPlanetPositions(double dt,List<Planet> planets){
+
+        Planet sun = planets.get(0);
+        Planet earth = planets.get(1);
+        Planet mars = planets.get(2);
+
+        earth.setAcceleration(applyForce(earth,Arrays.asList(sun, mars)));
+        mars.setAcceleration(applyForce(mars,Arrays.asList(sun, earth)));
+        sun.setAcceleration(applyForce(sun,Arrays.asList(earth, mars)));
+
+        Planet newEarth,newSun,newMars;
+        List<List<Planet>> hours = new ArrayList<>();
+
+        double time = 0;
+
+        while (time < 3600*24 ) {
+            if(time % 3600 == 0){
+                hours.add(Arrays.asList(sun,earth,mars));
+            }
+            newEarth = movePlanetVerlet(earth, new ArrayList<>(Arrays.asList(sun, mars)), dt);
+            newSun = movePlanetVerlet(sun, new ArrayList<>(Arrays.asList(earth, mars)), dt);
+            newMars = movePlanetVerlet(mars, new ArrayList<>(Arrays.asList(sun, earth)), dt);
+
+            earth = newEarth;
+            mars = newMars;
+            sun = newSun;
+
+
+            time += dt;
+        }
+
+        return hours;
+
+    }
+
+    public List<List<Planet>> getMinutePlanetPositions(double dt,List<Planet> planets){
+
+        Planet sun = planets.get(0);
+        Planet earth = planets.get(1);
+        Planet mars = planets.get(2);
+
+        earth.setAcceleration(applyForce(earth,Arrays.asList(sun, mars)));
+        mars.setAcceleration(applyForce(mars,Arrays.asList(sun, earth)));
+        sun.setAcceleration(applyForce(sun,Arrays.asList(earth, mars)));
+
+        Planet newEarth,newSun,newMars;
+        List<List<Planet>> minutes = new ArrayList<>();
+
+        double time = 0;
+
+        while (time < 3600 ) {
+            if(time % 60 == 0){
+                minutes.add(Arrays.asList(sun,earth,mars));
+            }
+
+            newEarth = movePlanetVerlet(earth, new ArrayList<>(Arrays.asList(sun, mars)), dt);
+            newSun = movePlanetVerlet(sun, new ArrayList<>(Arrays.asList(earth, mars)), dt);
+            newMars = movePlanetVerlet(mars, new ArrayList<>(Arrays.asList(sun, earth)), dt);
+
+            earth = newEarth;
+            mars = newMars;
+            sun = newSun;
+
+
+            time += dt;
+        }
+
+        return minutes;
+
+    }
+
 
     public static void generateOvitoFile(List<Planet> planets){
         StringBuilder sb = new StringBuilder();
