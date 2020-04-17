@@ -334,6 +334,33 @@ public class App {
 
     }
 
+    private void calculatePrevAcceleration(Planet earth, Planet sun, Planet mars, Planet ship, double dt){
+
+        Vector2D earthPrevVel = earth.getVelocity().getAdded(earth.getAcceleration().getMultiplied(-1*dt));
+        Vector2D earthPrevPos = earth.getPosition().getAdded(earthPrevVel.getMultiplied(dt)).getAdded(earth.getAcceleration().getMultiplied(dt*dt/2));
+
+        Vector2D sunPrevVel = sun.getVelocity().getAdded(sun.getAcceleration().getMultiplied(-1*dt));
+        Vector2D sunPrevPos = sun.getPosition().getAdded(sunPrevVel.getMultiplied(dt)).getAdded(sun.getAcceleration().getMultiplied(dt*dt/2));
+
+        Vector2D marsPrevVel = mars.getVelocity().getAdded(mars.getAcceleration().getMultiplied(-1*dt));
+        Vector2D marsPrevPos = mars.getPosition().getAdded(marsPrevVel.getMultiplied(dt)).getAdded(mars.getAcceleration().getMultiplied(dt*dt/2));
+
+        Vector2D shipPrevVel = ship.getVelocity().getAdded(ship.getAcceleration().getMultiplied(-1*dt));
+        Vector2D shipPrevPos = ship.getPosition().getAdded(shipPrevVel.getMultiplied(dt)).getAdded(ship.getAcceleration().getMultiplied(dt*dt/2));
+
+        Planet oldEarth = new Planet(100,earthPrevPos, earthPrevVel, new Vector2D(), 5.972e24, 6371000);
+        Planet oldSun = new Planet(200,sunPrevPos, sunPrevVel, new Vector2D(), 1.989e30, 696340000);
+        Planet oldMars = new Planet(300,marsPrevPos, marsPrevVel, new Vector2D(), 6.39e23, 3389500);
+        Planet oldShip = new Planet(400,shipPrevPos, shipPrevVel, new Vector2D(), 2e5, 0);
+
+        earth.setPrevAcc(applyForce(oldEarth, Arrays.asList(oldSun, oldMars, oldShip)));
+        sun.setPrevAcc(applyForce(oldSun, Arrays.asList(oldMars, oldEarth, oldShip)));
+        mars.setPrevAcc(applyForce(oldMars, Arrays.asList(oldSun, oldEarth, oldShip)));
+        ship.setPrevAcc(applyForce(oldShip, Arrays.asList(oldSun, oldEarth, oldMars)));
+
+        //System.out.printf("EA = %f, SUN = %f, MA = %f, SH = %f\n", earth.getPrevAcc().getLength(), sun.getPrevAcc().getLength(), mars.getPrevAcc().getLength(), ship.getPrevAcc().getLength());
+    }
+
     public static void generateOvitoFile(List<Planet> planets){
         StringBuilder sb = new StringBuilder();
         sb.append(planets.size());
