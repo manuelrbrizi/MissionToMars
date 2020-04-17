@@ -1,16 +1,25 @@
+import java.security.PublicKey;
+
 public class Planet {
 
+    int id;
     Vector2D position;
     Vector2D velocity;
     Vector2D acceleration;
     Vector2D prevAcc;
     double mass;
+    double radius;
 
-    public Planet(Vector2D position, Vector2D velocity, Vector2D acceleration, double mass) {
+    public Planet(){
+
+    }
+    public Planet(int id, Vector2D position, Vector2D velocity, Vector2D acceleration, double mass, double radius) {
+        this.id = id;
         this.position = position;
         this.velocity = velocity;
         this.acceleration = acceleration;
         this.mass = mass;
+        this.radius = radius;
     }
 
     public Planet(Vector2D position, Vector2D velocity, Vector2D acceleration, Vector2D prevAcc, double mass) {
@@ -59,5 +68,9 @@ public class Planet {
 
     public void setPrevAcc(Vector2D prevAcc) {
         this.prevAcc = prevAcc;
+    }
+
+    public boolean collidesWith(Planet p){
+        return position.distance(p.position) - radius - p.radius <= 0;
     }
 }
