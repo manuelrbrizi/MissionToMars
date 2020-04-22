@@ -1,18 +1,16 @@
-import java.security.PublicKey;
-
 public class Planet {
 
     int id;
-    Vector2D position;
-    Vector2D velocity;
-    Vector2D acceleration;
-    Vector2D prevAcc;
+    Vector position;
+    Vector velocity;
+    Vector acceleration;
+    Vector prevAcc;
     double mass;
     double radius;
 
     public Planet(){}
 
-    public Planet(int id, Vector2D position, Vector2D velocity, Vector2D acceleration, double mass, double radius) {
+    public Planet(int id, Vector position, Vector velocity, Vector acceleration, double mass, double radius) {
         this.id = id;
         this.position = position;
         this.velocity = velocity;
@@ -21,7 +19,7 @@ public class Planet {
         this.radius = radius;
     }
 
-    public Planet(Vector2D position, Vector2D velocity, Vector2D acceleration, Vector2D prevAcc, double mass) {
+    public Planet(Vector position, Vector velocity, Vector acceleration, Vector prevAcc, double mass) {
         this.position = position;
         this.velocity = velocity;
         this.acceleration = acceleration;
@@ -29,27 +27,27 @@ public class Planet {
         this.mass = mass;
     }
 
-    public Vector2D getPosition() {
+    public Vector getPosition() {
         return position;
     }
 
-    public void setPosition(Vector2D position) {
+    public void setPosition(Vector position) {
         this.position = position;
     }
 
-    public Vector2D getVelocity() {
+    public Vector getVelocity() {
         return velocity;
     }
 
-    public void setVelocity(Vector2D velocity) {
+    public void setVelocity(Vector velocity) {
         this.velocity = velocity;
     }
 
-    public Vector2D getAcceleration() {
+    public Vector getAcceleration() {
         return acceleration;
     }
 
-    public void setAcceleration(Vector2D acceleration) {
+    public void setAcceleration(Vector acceleration) {
         this.acceleration = acceleration;
     }
 
@@ -61,11 +59,11 @@ public class Planet {
         this.mass = mass;
     }
 
-    public Vector2D getPrevAcc() {
+    public Vector getPrevAcc() {
         return prevAcc;
     }
 
-    public void setPrevAcc(Vector2D prevAcc) {
+    public void setPrevAcc(Vector prevAcc) {
         this.prevAcc = prevAcc;
     }
 
