@@ -10,9 +10,8 @@ public class Planet {
     double mass;
     double radius;
 
-    public Planet(){
+    public Planet(){}
 
-    }
     public Planet(int id, Vector2D position, Vector2D velocity, Vector2D acceleration, double mass, double radius) {
         this.id = id;
         this.position = position;
